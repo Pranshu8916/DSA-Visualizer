@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #faf5ff;
+  --color-brand-100: #f3e8ff;
+  --color-brand-200: #e9d5ff;
+  --color-brand-300: #d8b4fe;
+  --color-brand-400: #c084fc;
+  --color-brand-500: #a855f7;
+  --color-brand-600: #9333ea;
+  --color-brand-700: #7e22ce;
+  --color-brand-800: #6b21a8;
+  --color-brand-900: #581c87;
+  --color-brand-950: #3b0764;
+  
+  --color-brand-405: #c084fc;
+  --color-brand-655: #9333ea;
+  
+  --color-slate-150: #e2e8f0;
+  --color-slate-205: #1e293b;
+  --color-slate-250: #cbd5e1;
+  --color-slate-550: #64748b;
+  --color-slate-655: #475569;
+  --color-slate-750: #334155;
+  --color-slate-850: #1e293b;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 antialiased;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Smooth drag and transitions */
+.node-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Scrollbar for dark/light mode */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-800 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-brand-500 rounded-full;
+}
+
+/* Code highlight override */
+pre {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+}
