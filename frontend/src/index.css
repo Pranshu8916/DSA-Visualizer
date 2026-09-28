@@ -1,56 +1,95 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #faf5ff;
-  --color-brand-100: #f3e8ff;
-  --color-brand-200: #e9d5ff;
-  --color-brand-300: #d8b4fe;
-  --color-brand-400: #c084fc;
-  --color-brand-500: #a855f7;
-  --color-brand-600: #9333ea;
-  --color-brand-700: #7e22ce;
-  --color-brand-800: #6b21a8;
-  --color-brand-900: #581c87;
-  --color-brand-950: #3b0764;
-  
-  --color-brand-405: #c084fc;
-  --color-brand-655: #9333ea;
-  
-  --color-slate-150: #e2e8f0;
-  --color-slate-205: #1e293b;
-  --color-slate-250: #cbd5e1;
-  --color-slate-550: #64748b;
-  --color-slate-655: #475569;
-  --color-slate-750: #334155;
-  --color-slate-850: #1e293b;
+  --color-brand-50: #F8FBFF;
+  --color-brand-100: #D9ECFF;
+  --color-brand-200: #B8DBFF;
+  --color-brand-300: #9BC8FF;
+  --color-brand-400: #64A0EC;
+  --color-brand-500: #3B78C8;
+  --color-brand-600: #2C63AC;
+  --color-brand-700: #204C88;
+  --color-brand-800: #1A3865;
+  --color-brand-900: #1A2340;
+  --color-brand-950: #0D1222;
 }
 
-body {
-  @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 antialiased;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+@layer utilities {
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
 }
 
-/* Smooth drag and transitions */
-.node-transition {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+:root {
+  --bg-primary: #F8FBFF;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #D9ECFF;
+  --text-main: #1A2340;
+  --text-muted: #3B78C8;
+  --accent: #3B78C8;
+  --border-subtle: #9BC8FF;
 }
 
-/* Custom Scrollbar for dark/light mode */
+html, body {
+  scroll-behavior: smooth;
+  background-color: #F8FBFF !important;
+  color: #1A2340 !important;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-800 rounded-full;
-}
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-brand-500 rounded-full;
+  width: 8px;
+  height: 8px;
 }
 
-/* Code highlight override */
-pre {
+::-webkit-scrollbar-track {
+  background: #F8FBFF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9BC8FF;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3B78C8;
+}
+
+pre, code {
   font-family: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+.kp-card {
+  background-color: #ffffff;
+  border: 1px solid #d9ecff;
+  border-radius: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px -2px rgba(26, 35, 64, 0.05);
+}
+
+.kp-card:hover {
+  border-color: #9bc8ff;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -4px rgba(59, 120, 200, 0.15);
 }

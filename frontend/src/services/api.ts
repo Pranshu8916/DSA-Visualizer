@@ -142,6 +142,14 @@ const getLocalMockData = (id: string): Algorithm | null => {
       timeComplexity: { best: "O(V + E)", average: "O(V + E)", worst: "O(V + E)" },
       spaceComplexity: "O(V)",
       pseudocode: `procedure BFS(graph, startVertex):\n    Q.enqueue(startVertex)\n    // Mark and visit neighbors\n\nprocedure DFS(graph, startVertex):\n    S.push(startVertex)\n    // Mark and visit deep neighbors`
+    },
+    "recursion": {
+      name: "Recursion & Call Stack",
+      category: "Recursion",
+      description: "Recursion is a programming technique where a function solves a problem by calling itself with smaller sub-problems until reaching a base case. Each call pushes a new stack frame onto the Call Stack.",
+      timeComplexity: { best: "O(1)", average: "O(2^n)", worst: "O(2^n)" },
+      spaceComplexity: "O(n)",
+      pseudocode: `procedure solve(n):\n    if n <= 1 then\n        return baseCase\n    end if\n    return solve(n - 1) + solve(n - 2)\nend procedure`
     }
   };
 

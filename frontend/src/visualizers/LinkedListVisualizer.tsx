@@ -161,13 +161,13 @@ export const LinkedListVisualizer: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+      <div className="flex items-center justify-between bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <GitCommit className="w-6 h-6 text-brand-500" />
             Linked List Visualizer
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1">
             Build and manipulate a singly linked list. Nodes point sequentially towards NULL.
           </p>
         </div>
@@ -175,24 +175,24 @@ export const LinkedListVisualizer: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Side: Operations */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
+        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
           {/* Insertion controls */}
           <div className="space-y-3">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Insert</h3>
+            <h3 className="font-bold text-slate-700 text-xs uppercase tracking-wider">Insert</h3>
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder="Value"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className="w-20 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-2 py-2 outline-none focus:border-brand-500"
+                className="w-20 bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-2 py-2 outline-none focus:border-brand-500"
               />
               <input
                 type="number"
                 placeholder="Idx"
                 value={indexValue}
                 onChange={(e) => setIndexValue(e.target.value)}
-                className="w-14 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-2 py-2 outline-none focus:border-brand-500"
+                className="w-14 bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-2 py-2 outline-none focus:border-brand-500"
               />
             </div>
             <div className="grid grid-cols-3 gap-1.5 pt-1">
@@ -218,11 +218,11 @@ export const LinkedListVisualizer: React.FC = () => {
             </div>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Delete controls */}
           <div className="space-y-2">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Delete</h3>
+            <h3 className="font-bold text-slate-700 text-xs uppercase tracking-wider">Delete</h3>
             <div className="grid grid-cols-3 gap-1.5">
               <button
                 onClick={() => deleteNode('head')}
@@ -245,18 +245,18 @@ export const LinkedListVisualizer: React.FC = () => {
             </div>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Search control */}
           <div className="space-y-2">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Search Node</h3>
+            <h3 className="font-bold text-slate-700 text-xs uppercase tracking-wider">Search Node</h3>
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder="Target value"
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
-                className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
+                className="flex-1 bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
               />
               <button
                 onClick={searchNode}
@@ -268,25 +268,25 @@ export const LinkedListVisualizer: React.FC = () => {
             </div>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Special reverse action */}
           <button
             onClick={reverseList}
-            className="w-full flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-950 py-2 rounded-xl text-slate-700 dark:text-slate-350 font-bold text-xs transition-all"
+            className="w-full flex items-center justify-center gap-2 border border-slate-200 hover:bg-slate-50 py-2 rounded-xl text-slate-700 font-bold text-xs transition-all"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Reverse List
           </button>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Logs */}
           <div>
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider mb-2">History</h3>
-            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl p-3 h-32 overflow-y-auto space-y-1.5 text-xs font-mono">
+            <h3 className="font-bold text-slate-700 text-xs uppercase tracking-wider mb-2">History</h3>
+            <div className="bg-slate-50 border border-slate-150 rounded-xl p-3 h-32 overflow-y-auto space-y-1.5 text-xs font-mono">
               {logs.map((log, index) => (
-                <div key={index} className="text-slate-655 dark:text-slate-400">
+                <div key={index} className="text-slate-655">
                   &gt; {log}
                 </div>
               ))}
@@ -295,7 +295,7 @@ export const LinkedListVisualizer: React.FC = () => {
         </div>
 
         {/* Right Side: Linked List visualization canvas */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm lg:col-span-3 flex items-center justify-start overflow-x-auto min-h-[350px] relative select-none scrollbar-none">
+        <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm lg:col-span-3 flex items-center justify-start overflow-x-auto min-h-[350px] relative select-none scrollbar-none">
           
           <div className="flex items-center gap-1.5 min-w-max px-4">
             <AnimatePresence initial={false}>
@@ -305,7 +305,7 @@ export const LinkedListVisualizer: React.FC = () => {
                 const isHead = idx === 0;
                 const isTail = idx === list.length - 1;
 
-                let nodeColor = 'bg-brand-50 border-brand-200 dark:bg-brand-950/20 dark:border-brand-900 text-brand-700 dark:text-brand-300';
+                let nodeColor = 'bg-brand-50 border-brand-200 text-brand-700';
                 
                 if (isFound) {
                   nodeColor = 'bg-emerald-500 border-emerald-600 text-white scale-110 shadow-lg';
@@ -342,13 +342,13 @@ export const LinkedListVisualizer: React.FC = () => {
                       <div className={`w-16 h-16 rounded-xl border-2 flex flex-col items-center justify-center font-bold font-mono transition-all duration-300 ${nodeColor}`}>
                         <span className="text-sm">{node.value}</span>
                         {/* Memory pointer representation */}
-                        <div className="w-full border-t border-slate-200 dark:border-slate-800 text-[8px] font-bold text-slate-400 dark:text-slate-500 flex justify-center py-0.5 uppercase tracking-wide">
+                        <div className="w-full border-t border-slate-200 text-[8px] font-bold text-slate-400 flex justify-center py-0.5 uppercase tracking-wide">
                           next
                         </div>
                       </div>
 
                       {/* Index counter */}
-                      <span className="text-[10px] text-slate-400 dark:text-slate-550 font-bold font-mono mt-1">
+                      <span className="text-[10px] text-slate-400 font-bold font-mono mt-1">
                         [{idx}]
                       </span>
                     </motion.div>
@@ -360,7 +360,7 @@ export const LinkedListVisualizer: React.FC = () => {
                         initial={{ opacity: 0, scaleX: 0 }}
                         animate={{ opacity: 1, scaleX: 1 }}
                         exit={{ opacity: 0, scaleX: 0 }}
-                        className="flex items-center text-slate-350 dark:text-slate-750 px-1"
+                        className="flex items-center text-slate-350 px-1"
                       >
                         <ArrowRight className="w-6 h-6 animate-pulse" />
                       </motion.div>
@@ -372,14 +372,14 @@ export const LinkedListVisualizer: React.FC = () => {
 
             {/* Last pointer pointing to NULL */}
             {list.length > 0 ? (
-              <div className="flex items-center text-slate-350 dark:text-slate-750 px-1">
+              <div className="flex items-center text-slate-350 px-1">
                 <ArrowRight className="w-6 h-6" />
-                <div className="w-12 h-12 rounded-full border border-slate-300 dark:border-slate-800 flex items-center justify-center text-[10px] font-extrabold text-slate-400 dark:text-slate-550 bg-slate-50 dark:bg-slate-950">
+                <div className="w-12 h-12 rounded-full border border-slate-300 flex items-center justify-center text-[10px] font-extrabold text-slate-400 bg-slate-50">
                   NULL
                 </div>
               </div>
             ) : (
-              <div className="text-slate-400 dark:text-slate-600 text-xs font-semibold uppercase tracking-wider">
+              <div className="text-slate-400 text-xs font-semibold uppercase tracking-wider">
                 List is Empty (No Head)
               </div>
             )}

@@ -206,6 +206,147 @@ export const TreeVisualizer: React.FC = () => {
     setTimeout(() => setActiveNodeKey(null), 1500);
   };
 
+  // Morris Traversal (Inorder & Preorder using threaded binary tree)
+  const runMorrisTraversal = async (mode: 'inorder' | 'preorder') => {
+    if (!root) return;
+    setIsAnimating(true);
+    setTraversedKeys([]);
+    setLogs((prev) => [`Starting Morris ${mode.toUpperCase()} Traversal (O(1) Space)...`, ...prev]);
+
+    // We make a deep copy to simulate pointer manipulations safely
+    const copyRoot = JSON.parse(JSON.stringify(root));
+    let curr: TreeNode | null = copyRoot;
+    const sequence: number[] = [];
+    const activeList: number[] = [];
+
+    while (curr !== null) {
+      setActiveNodeKey(curr.key);
+      await new Promise((resolve) => setTimeout(resolve, 650));
+
+      if (curr.left === null) {
+        // Visit curr node
+        sequence.push(curr.key);
+        activeList.push(curr.key);
+        setTraversedKeys([...activeList]);
+        setLogs((prev) => [`Visited node ${curr!.key} (No left subtree)`, ...prev]);
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        curr = curr.right;
+      } else {
+        // Find predecessor
+        let pred: TreeNode = curr.left;
+        while (pred.right !== null && pred.right.key !== curr.key) {
+          pred = pred.right;
+        }
+
+        if (pred.right === null) {
+          // Create temporary thread link
+          pred.right = { key: curr.key, left: null, right: null };
+          setLogs((prev) => [`Thread created: node ${pred.key} -> node ${curr!.key}`, ...prev]);
+          if (mode === 'preorder') {
+            sequence.push(curr.key);
+            activeList.push(curr.key);
+            setTraversedKeys([...activeList]);
+            setLogs((prev) => [`Visited node ${curr!.key} (Preorder early visit)`, ...prev]);
+          }
+          await new Promise((resolve) => setTimeout(resolve, 600));
+          curr = curr.left;
+        } else {
+          // Thread already exists, restore link
+          pred.right = null;
+          setLogs((prev) => [`Thread removed: node ${pred.key} -x-> node ${curr!.key}`, ...prev]);
+          if (mode === 'inorder') {
+            sequence.push(curr.key);
+            activeList.push(curr.key);
+            setTraversedKeys([...activeList]);
+            setLogs((prev) => [`Visited node ${curr!.key} (Inorder after left subtree)`, ...prev]);
+          }
+          await new Promise((resolve) => setTimeout(resolve, 600));
+          curr = curr.right;
+        }
+      }
+    }
+
+    setLogs((prev) => [`Morris ${mode.toUpperCase()} complete! Sequence: [${sequence.join(', ')}]`, ...prev]);
+    setIsAnimating(false);
+    setTimeout(() => setActiveNodeKey(null), 1500);
+  };
+
+  // Level-Order Traversal (BFS)
+  const runLevelOrder = async () => {
+    if (!root) return;
+    setIsAnimating(true);
+    setTraversedKeys([]);
+    setLogs((prev) => [`Running Level-Order (BFS) traversal...`, ...prev]);
+
+    const queue: TreeNode[] = [root];
+    const sequence: number[] = [];
+    const activeList: number[] = [];
+
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      sequence.push(current.key);
+      setActiveNodeKey(current.key);
+      activeList.push(current.key);
+      setTraversedKeys([...activeList]);
+      await new Promise((resolve) => setTimeout(resolve, 600));
+
+      if (current.left) queue.push(current.left);
+      if (current.right) queue.push(current.right);
+    }
+
+    setLogs((prev) => [`Finished Level-Order. Visited: [${sequence.join(', ')}]`, ...prev]);
+    setIsAnimating(false);
+    setTimeout(() => setActiveNodeKey(null), 1500);
+  };
+
+  // Find Min Key
+  const runFindMin = async () => {
+    if (!root) return;
+    setIsAnimating(true);
+    setTraversedKeys([]);
+    setLogs((prev) => [`Finding minimum node key...`, ...prev]);
+
+    let current: TreeNode | null = root;
+    const path: number[] = [];
+
+    while (current !== null) {
+      setActiveNodeKey(current.key);
+      path.push(current.key);
+      setTraversedKeys([...path]);
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      if (!current.left) break;
+      current = current.left;
+    }
+
+    setLogs((prev) => [`Minimum node key is: ${current?.key}`, ...prev]);
+    setIsAnimating(false);
+    setTimeout(() => setActiveNodeKey(null), 1500);
+  };
+
+  // Find Max Key
+  const runFindMax = async () => {
+    if (!root) return;
+    setIsAnimating(true);
+    setTraversedKeys([]);
+    setLogs((prev) => [`Finding maximum node key...`, ...prev]);
+
+    let current: TreeNode | null = root;
+    const path: number[] = [];
+
+    while (current !== null) {
+      setActiveNodeKey(current.key);
+      path.push(current.key);
+      setTraversedKeys([...path]);
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      if (!current.right) break;
+      current = current.right;
+    }
+
+    setLogs((prev) => [`Maximum node key is: ${current?.key}`, ...prev]);
+    setIsAnimating(false);
+    setTimeout(() => setActiveNodeKey(null), 1500);
+  };
+
   // Convert recursive tree nodes to display nodes with coordinate positions
   const getRenderNodes = (): { nodes: RenderNode[]; edges: RenderNode[] } => {
     const list: RenderNode[] = [];
@@ -251,13 +392,13 @@ export const TreeVisualizer: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+      <div className="flex items-center justify-between bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <Network className="w-6 h-6 text-brand-500" />
             Binary Search Tree (BST)
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1">
             Build a BST, search nodes, or run traversals (Inorder, Preorder, Postorder) with visual node traversal.
           </p>
         </div>
@@ -265,17 +406,17 @@ export const TreeVisualizer: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Side Controls */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
+        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
           {/* Operations */}
           <div className="space-y-3">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Modify Tree</h3>
+            <h3 className="font-bold text-slate-700 text-xs uppercase tracking-wider">Modify Tree</h3>
             <div className="flex flex-col gap-2">
               <input
                 type="number"
                 placeholder="Key (0 - 99)"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
-                className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
+                className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
               />
               <div className="grid grid-cols-3 gap-1.5 pt-1">
                 <button
@@ -303,47 +444,83 @@ export const TreeVisualizer: React.FC = () => {
             </div>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
-          {/* Traversals */}
+          {/* Traversals & Operations */}
           <div className="space-y-2">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Traversals</h3>
-            <div className="flex flex-col gap-2 pt-1">
+            <h3 className="font-bold text-slate-700 text-xs uppercase tracking-wider">Algorithms & Traversals</h3>
+            <div className="grid grid-cols-2 gap-1.5 pt-1">
               <button
                 onClick={() => runTraversal('inorder')}
                 disabled={isAnimating || !root}
-                className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-350 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 transition-all"
               >
-                <Play className="w-3 h-3 text-emerald-500" />
-                Inorder (Sorted)
+                <Play className="w-3 h-3 text-emerald-500" /> Inorder
               </button>
               <button
                 onClick={() => runTraversal('preorder')}
                 disabled={isAnimating || !root}
-                className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-350 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 transition-all"
               >
-                <Play className="w-3 h-3 text-brand-500" />
-                Preorder
+                <Play className="w-3 h-3 text-brand-500" /> Preorder
               </button>
               <button
                 onClick={() => runTraversal('postorder')}
                 disabled={isAnimating || !root}
-                className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-350 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all"
+                className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 transition-all"
               >
-                <Play className="w-3 h-3 text-amber-500" />
-                Postorder
+                <Play className="w-3 h-3 text-amber-500" /> Postorder
+              </button>
+              <button
+                onClick={runLevelOrder}
+                disabled={isAnimating || !root}
+                className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-bold flex items-center justify-center gap-1 transition-all"
+              >
+                <Play className="w-3 h-3 text-purple-500" /> Level Order
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5 pt-1">
+              <button
+                onClick={() => runMorrisTraversal('inorder')}
+                disabled={isAnimating || !root}
+                className="bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-600 text-xs py-1.5 rounded-xl font-bold transition-all"
+              >
+                Morris Inorder
+              </button>
+              <button
+                onClick={() => runMorrisTraversal('preorder')}
+                disabled={isAnimating || !root}
+                className="bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-600 text-xs py-1.5 rounded-xl font-bold transition-all"
+              >
+                Morris Preorder
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5 pt-1">
+              <button
+                onClick={runFindMin}
+                disabled={isAnimating || !root}
+                className="bg-blue-50 border border-blue-200 hover:bg-blue-100 text-[#3B78C8] text-xs py-1.5 rounded-xl font-bold transition-all"
+              >
+                Find Min Key
+              </button>
+              <button
+                onClick={runFindMax}
+                disabled={isAnimating || !root}
+                className="bg-blue-50 border border-blue-200 hover:bg-blue-100 text-[#3B78C8] text-xs py-1.5 rounded-xl font-bold transition-all"
+              >
+                Find Max Key
               </button>
             </div>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Logs */}
           <div>
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider mb-2">History</h3>
-            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl p-3 h-32 overflow-y-auto space-y-1.5 text-xs font-mono">
+            <h3 className="font-bold text-slate-700 text-xs uppercase tracking-wider mb-2">History</h3>
+            <div className="bg-slate-50 border border-slate-150 rounded-xl p-3 h-32 overflow-y-auto space-y-1.5 text-xs font-mono">
               {logs.map((log, index) => (
-                <div key={index} className="text-slate-650 dark:text-slate-400">
+                <div key={index} className="text-slate-650">
                   &gt; {log}
                 </div>
               ))}
@@ -352,9 +529,9 @@ export const TreeVisualizer: React.FC = () => {
         </div>
 
         {/* Right Side Rendering Canvas (SVG) */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm lg:col-span-3 flex flex-col justify-between min-h-[400px] select-none overflow-x-auto">
+        <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm lg:col-span-3 flex flex-col justify-between min-h-[400px] select-none overflow-x-auto">
           {/* Display Output Node Sequence */}
-          <div className="flex items-center gap-2 text-xs font-bold bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-150 dark:border-slate-850">
+          <div className="flex items-center gap-2 text-xs font-bold bg-slate-50 p-3 rounded-xl border border-slate-150">
             <span className="text-slate-400">Traversal Output:</span>
             <div className="flex items-center gap-1.5 overflow-x-auto">
               {traversedKeys.map((key, i) => (
@@ -379,7 +556,7 @@ export const TreeVisualizer: React.FC = () => {
                   y2={edge.y}
                   stroke="#cbd5e1"
                   strokeWidth="2.5"
-                  className="dark:stroke-slate-800"
+                  className=""
                 />
               ))}
 
@@ -388,8 +565,8 @@ export const TreeVisualizer: React.FC = () => {
                 const isActive = activeNodeKey === node.key;
                 const isTraversed = traversedKeys.includes(node.key);
 
-                let fill = 'fill-white dark:fill-slate-900 stroke-slate-350 dark:stroke-slate-800';
-                let textFill = 'fill-slate-700 dark:fill-slate-300';
+                let fill = 'fill-white stroke-slate-350';
+                let textFill = 'fill-slate-700';
 
                 if (isActive) {
                   fill = 'fill-amber-500 stroke-amber-600';
@@ -421,7 +598,7 @@ export const TreeVisualizer: React.FC = () => {
               })}
 
               {nodes.length === 0 && (
-                <text x="350" y="160" textAnchor="middle" className="text-slate-400 dark:text-slate-600 text-xs font-semibold uppercase tracking-wider font-sans">
+                <text x="350" y="160" textAnchor="middle" className="text-slate-400 text-xs font-semibold uppercase tracking-wider font-sans">
                   Empty BST (Insert a root node)
                 </text>
               )}

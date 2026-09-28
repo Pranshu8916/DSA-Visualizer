@@ -1,45 +1,48 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeContext';
 import { Navbar } from './components/Navbar';
-import { Sidebar } from './components/Sidebar';
+import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
-import { SortingVisualizer } from './visualizers/SortingVisualizer';
-import { SearchingVisualizer } from './visualizers/SearchingVisualizer';
-import { StackVisualizer } from './visualizers/StackVisualizer';
-import { QueueVisualizer } from './visualizers/QueueVisualizer';
-import { LinkedListVisualizer } from './visualizers/LinkedListVisualizer';
-import { TreeVisualizer } from './visualizers/TreeVisualizer';
-import { GraphVisualizer } from './visualizers/GraphVisualizer';
+import { VisualizerPage } from './pages/VisualizerPage';
+import { DesignAlgorithm } from './pages/DesignAlgorithm';
+import { Blogs } from './pages/Blogs';
+import { About } from './pages/About';
+import { Contact } from './pages/Contact';
+import { Login } from './pages/Login';
 
 const App: React.FC = () => {
   return (
     <ThemeProvider>
       <Router>
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 flex flex-col transition-colors duration-200">
-          {/* Top Navigation */}
+        <div className="min-h-screen bg-[#F8FBFF] text-[#1A2340] flex flex-col font-sans">
+          {/* Top Floating Glassmorphism Navbar */}
           <Navbar />
 
-          <div className="flex-1 flex flex-col lg:flex-row">
-            {/* Sidebar Visualizer Menu */}
-            <Sidebar />
+          {/* Main Route Content */}
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/visualizer" element={<VisualizerPage />} />
+              <Route path="/sorting" element={<Navigate to="/visualizer?tab=sorting" replace />} />
+              <Route path="/searching" element={<Navigate to="/visualizer?tab=searching" replace />} />
+              <Route path="/stack" element={<Navigate to="/visualizer?tab=stack" replace />} />
+              <Route path="/queue" element={<Navigate to="/visualizer?tab=queue" replace />} />
+              <Route path="/linked-list" element={<Navigate to="/visualizer?tab=linkedlist" replace />} />
+              <Route path="/tree" element={<Navigate to="/visualizer?tab=tree" replace />} />
+              <Route path="/graph" element={<Navigate to="/visualizer?tab=graph" replace />} />
+              <Route path="/recursion" element={<Navigate to="/visualizer?tab=recursion" replace />} />
+              <Route path="/design-algorithm" element={<DesignAlgorithm />} />
+              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
 
-            {/* Main Visualizer Canvas Panel */}
-            <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
-              <div className="max-w-7xl mx-auto">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/sorting" element={<SortingVisualizer />} />
-                  <Route path="/searching" element={<SearchingVisualizer />} />
-                  <Route path="/stack" element={<StackVisualizer />} />
-                  <Route path="/queue" element={<QueueVisualizer />} />
-                  <Route path="/linked-list" element={<LinkedListVisualizer />} />
-                  <Route path="/tree" element={<TreeVisualizer />} />
-                  <Route path="/graph" element={<GraphVisualizer />} />
-                </Routes>
-              </div>
-            </main>
-          </div>
+          {/* Footer Component */}
+          <Footer />
         </div>
       </Router>
     </ThemeProvider>

@@ -1,259 +1,502 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Sparkles, BarChart3, ArrowRight, BookOpen, Layers, Network, Workflow } from 'lucide-react';
-import { motion } from 'framer-motion';
-
-interface AlgorithmCard {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  link: string;
-  timeComplexity: string;
-  spaceComplexity: string;
-  icon: any;
-  color: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { 
+  ArrowRight, CheckCircle2, Code, 
+  BarChart2, Search, Layers, Network, Workflow, HelpCircle, 
+  ChevronDown, ChevronUp, Sparkles, Terminal, Play, Sliders, Cpu, Lightbulb, FileText
+} from 'lucide-react';
 
 export const Home: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const navigate = useNavigate();
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const categories = ['All', 'Sorting', 'Searching', 'Data Structures', 'Trees', 'Graphs'];
+  const toggleFaq = (index: number) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
 
-  const algorithms: AlgorithmCard[] = [
+  const coreServices = [
     {
-      id: 'bubble-sort',
-      name: 'Bubble Sort',
-      category: 'Sorting',
-      description: 'A simple comparison sorting algorithm that repeatedly swaps adjacent elements if they are out of order.',
-      link: '/sorting',
-      timeComplexity: 'O(n²)',
-      spaceComplexity: 'O(1)',
-      icon: BarChart3,
-      color: 'from-amber-500 to-orange-500'
+      id: 'visualizer',
+      title: 'Algorithm Visualizer',
+      subtitle: 'Step-by-step visualizations',
+      description: 'Interactive execution environment for 15+ Data Structures & Algorithms with speed sliders, memory pointer tracking, and variable traces.',
+      features: [
+        'Sorting & Searching (Bubble, Merge, Quick, Binary)',
+        'Data Structures (Stack, Queue, Linked Lists)',
+        'Trees, Graphs, MST & Call Stack Recursion'
+      ],
+      icon: Code,
+      link: '/visualizer',
+      badge: 'Interactive Playground'
     },
     {
-      id: 'merge-sort',
-      name: 'Merge Sort',
-      category: 'Sorting',
-      description: 'An efficient, stable, divide-and-conquer sorting algorithm that splits list in halves, sorts, and merges.',
-      link: '/sorting',
-      timeComplexity: 'O(n log n)',
-      spaceComplexity: 'O(n)',
-      icon: BarChart3,
-      color: 'from-blue-500 to-indigo-500'
+      id: 'design-analysis',
+      title: 'Design & Analysis',
+      subtitle: 'Complexity & Algorithm design',
+      description: 'Master algorithmic design paradigms (Divide & Conquer, Greedy, Dynamic Programming) with formal Big-O time & space complexity analysis.',
+      features: [
+        'Time Complexity (Best, Average, Worst Case)',
+        'Space Complexity & Memory Bounds',
+        'Algorithm Design Paradigms & Trade-offs'
+      ],
+      icon: BarChart2,
+      link: '/design-algorithm',
+      badge: 'Algorithmic Mastery'
     },
     {
-      id: 'quick-sort',
-      name: 'Quick Sort',
-      category: 'Sorting',
-      description: 'Highly efficient partitioning divide-and-conquer algorithm that sorts elements around a chosen pivot.',
-      link: '/sorting',
-      timeComplexity: 'O(n log n)',
-      spaceComplexity: 'O(log n)',
-      icon: BarChart3,
-      color: 'from-violet-500 to-purple-500'
-    },
-    {
-      id: 'binary-search',
-      name: 'Binary Search',
-      category: 'Searching',
-      description: 'Efficient search algorithm on sorted arrays that repeatedly divides the search interval in half.',
-      link: '/searching',
-      timeComplexity: 'O(log n)',
-      spaceComplexity: 'O(1)',
-      icon: Search,
-      color: 'from-emerald-550 to-teal-500'
-    },
-    {
-      id: 'stack',
-      name: 'Stack Visualizer',
-      category: 'Data Structures',
-      description: 'A linear Last-In First-Out (LIFO) container supporting push, pop, and peek operations.',
-      link: '/stack',
-      timeComplexity: 'O(1)',
-      spaceComplexity: 'O(n)',
-      icon: Layers,
-      color: 'from-rose-500 to-pink-500'
-    },
-    {
-      id: 'queue',
-      name: 'Queue Visualizer',
-      category: 'Data Structures',
-      description: 'A linear First-In First-Out (FIFO) conveyor track container supporting enqueue and dequeue.',
-      link: '/queue',
-      timeComplexity: 'O(1)',
-      spaceComplexity: 'O(n)',
-      icon: Layers,
-      color: 'from-sky-500 to-cyan-500'
-    },
-    {
-      id: 'linked-list',
-      name: 'Linked List',
-      category: 'Data Structures',
-      description: 'A sequential chain of nodes pointing to next nodes, supporting custom insertions, deletions and reverse.',
-      link: '/linked-list',
-      timeComplexity: 'O(n)',
-      spaceComplexity: 'O(n)',
-      icon: Network,
-      color: 'from-teal-500 to-emerald-500'
-    },
-    {
-      id: 'binary-search-tree',
-      name: 'Binary Search Tree',
-      category: 'Trees',
-      description: 'A sorted node binary tree showing Inorder, Preorder, Postorder traversals and insertions.',
-      link: '/tree',
-      timeComplexity: 'O(log n)',
-      spaceComplexity: 'O(n)',
-      icon: Network,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      id: 'graph',
-      name: 'Graph Traversals',
-      category: 'Graphs',
-      description: 'BFS and DFS traversals on dynamically built node network graphs.',
-      link: '/graph',
-      timeComplexity: 'O(V + E)',
-      spaceComplexity: 'O(V)',
-      icon: Workflow,
-      color: 'from-indigo-500 to-purple-500'
+      id: 'blogs',
+      title: 'Blogs',
+      subtitle: 'Tutorials & Guides',
+      description: 'In-depth conceptual articles, coding interview problem-solving frameworks, and step-by-step tutorials curated by Pranshu Bodara.',
+      features: [
+        'Data Structure Fundamentals & Implementations',
+        'LeetCode & Technical Interview Strategies',
+        'Step-by-step Code Walkthroughs'
+      ],
+      icon: FileText,
+      link: '/blogs',
+      badge: 'Articles & Guides'
     }
   ];
 
-  // Filters logic
-  const filteredAlgos = algorithms.filter((algo) => {
-    const matchesSearch =
-      algo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      algo.description.toLowerCase().includes(searchQuery.toLowerCase());
+  const featureCards = [
+    {
+      id: 'sorting',
+      title: 'Sorting Algorithms',
+      description: 'Visualize Bubble, Selection, Insertion, Merge, Quick, and Heap Sort with real-time bar animation and custom speed control.',
+      icon: BarChart2,
+      color: 'from-[#3B78C8] to-[#1A2340]',
+      badge: '6 Algorithms',
+      link: '/visualizer?tab=sorting'
+    },
+    {
+      id: 'searching',
+      title: 'Searching Algorithms',
+      description: 'Observe Linear Search and Binary Search dividing interval bounds to locate target items efficiently.',
+      icon: Search,
+      color: 'from-cyan-600 to-[#3B78C8]',
+      badge: 'Linear & Binary',
+      link: '/visualizer?tab=searching'
+    },
+    {
+      id: 'stack-queue',
+      title: 'Stack & Queue',
+      description: 'Master Last-In First-Out (LIFO) Push/Pop operations and First-In First-Out (FIFO) Enqueue/Dequeue tracks.',
+      icon: Layers,
+      color: 'from-purple-600 to-[#3B78C8]',
+      badge: 'LIFO & FIFO',
+      link: '/visualizer?tab=stack'
+    },
+    {
+      id: 'linked-list',
+      title: 'Linked List',
+      description: 'Interact with Singly, Doubly, and Circular Linked Lists. Perform node insertion, deletion, search, and list reversing.',
+      icon: Network,
+      color: 'from-emerald-600 to-[#3B78C8]',
+      badge: 'Singly / Doubly / Circular',
+      link: '/visualizer?tab=linkedlist'
+    },
+    {
+      id: 'tree',
+      title: 'Trees & BST',
+      description: 'Construct Binary Search Trees and trigger step-by-step Inorder, Preorder, Postorder, and Level Order traversals.',
+      icon: Network,
+      color: 'from-amber-600 to-[#3B78C8]',
+      badge: 'BST & Traversals',
+      link: '/visualizer?tab=tree'
+    },
+    {
+      id: 'graph',
+      title: 'Graph Traversals',
+      description: 'Build custom node network graphs and execute Breadth-First Search (BFS) and Depth-First Search (DFS).',
+      icon: Workflow,
+      color: 'from-rose-600 to-[#3B78C8]',
+      badge: 'BFS & DFS',
+      link: '/visualizer?tab=graph'
+    }
+  ];
 
-    const matchesCategory = selectedCategory === 'All' || algo.category === selectedCategory;
+  const howItWorksSteps = [
+    {
+      step: '01',
+      title: 'Select an Algorithm',
+      description: 'Choose from 15+ Data Structures & Algorithms including Sorting, Binary Trees, Graphs, Stacks, Queues, and Searching.',
+      icon: Code,
+      badge: 'Step 1'
+    },
+    {
+      step: '02',
+      title: 'Input Custom Data',
+      description: 'Provide your own array numbers, target search values, or custom node structures to test real interview testcases.',
+      icon: Sliders,
+      badge: 'Step 2'
+    },
+    {
+      step: '03',
+      title: 'Step Through Execution',
+      description: 'Play, pause, step backward, or step forward at your own pace. Adjust animation speed from 100ms to 1500ms per step.',
+      icon: Play,
+      badge: 'Step 3'
+    },
+    {
+      step: '04',
+      title: 'Analyze Logic & Complexity',
+      description: 'Watch variables transform live, inspect color-coded comparisons, and master Time (Big-O) & Space complexity bounds.',
+      icon: Cpu,
+      badge: 'Step 4'
+    }
+  ];
 
-    return matchesSearch && matchesCategory;
-  });
+  const faqs = [
+    {
+      question: "Is DSA Visualizer free to use?",
+      answer: "Yes! DSA Visualizer created by Pranshu Bodara is 100% free for students, educators, and developers. No credit card or compulsory sign-up is required."
+    },
+    {
+      question: "How can I adjust algorithm visualization speed?",
+      answer: "Each visualizer has a custom speed slider allowing you to slow down step execution up to 1500ms per step or speed it up according to your preference."
+    },
+    {
+      question: "Which data structures and algorithms are included?",
+      answer: "We support Sorting (Bubble, Selection, Insertion, Merge, Quick, Heap), Searching (Linear, Binary), Stacks, Queues, Linked Lists (Singly, Doubly, Circular), Trees (BST, Inorder, Preorder, Postorder), and Graphs (BFS, DFS)."
+    },
+    {
+      question: "Can I test custom array or value inputs?",
+      answer: "Absolutely! Each visualizer includes a custom input field where you can provide comma-separated numbers or target values to test your custom testcases."
+    }
+  ];
 
   return (
-    <div className="space-y-8 pb-12">
-      {/* Hero Banner with modern look */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-brand-600 to-indigo-700 dark:from-slate-900 dark:to-brand-950 rounded-3xl p-8 md:p-12 shadow-xl shadow-brand-500/10">
-        <div className="relative z-10 max-w-2xl space-y-4">
-          <div className="flex flex-wrap gap-2">
-            <div className="inline-flex items-center gap-1.5 bg-white/10 dark:bg-slate-800/50 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full border border-white/10">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Interactive Learning Laboratory</span>
-            </div>
-            <div className="inline-flex items-center gap-1.5 bg-fuchsia-500/20 backdrop-blur text-fuchsia-200 text-xs font-extrabold px-3 py-1 rounded-full border border-fuchsia-500/30">
-              <span>Author: Panshu Bodara</span>
-            </div>
-          </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white leading-tight tracking-tight">
-            Master Data Structures & Algorithms visually.
-          </h1>
-          <p className="text-brand-100 dark:text-slate-300 text-sm md:text-base leading-relaxed">
-            Step through code, observe execution pointer adjustments, and interact directly with trees, arrays, graphs, stacks, and lists.
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#F8FBFF] text-[#1A2340]">
+      {/* HERO SECTION */}
+      <section id="hero" className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-[#D9ECFF]/50 via-[#F8FBFF] to-white overflow-hidden">
         
-        {/* Background gradient graphics */}
-        <div className="absolute right-0 bottom-0 top-0 w-1/3 opacity-10 pointer-events-none hidden md:block">
-          <div className="w-full h-full border-4 border-dashed border-white rounded-full translate-x-1/2 translate-y-1/2"></div>
-        </div>
-      </div>
+        <div className="max-w-6xl mx-auto px-6 pt-6 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-12">
+          {/* Hero Text */}
+          <div className="lg:w-1/2 text-center lg:text-left space-y-6">
 
-      {/* Categories & Search Panel */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* Category Pill Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 md:pb-0 scrollbar-none">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
-                selectedCategory === category
-                  ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20'
-                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-950'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B78C8] to-[#1A2340]">
+                Master DSA
+              </span>
+              <br />
+              Through Interactive Visualization
+            </h1>
 
-        {/* Search Bar */}
-        <div className="relative w-full md:w-80">
-          <input
-            type="text"
-            placeholder="Search algorithms..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-205 text-sm rounded-xl pl-10 pr-4 py-2.5 outline-none focus:border-brand-500 shadow-sm"
-          />
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-        </div>
-      </div>
+            <p className="text-base sm:text-lg text-[#1A2340]/80 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium">
+              See algorithms come to life step-by-step with customizable playback speeds, variable traces, and execution pointers. Designed by Pranshu Bodara.
+            </p>
 
-      {/* Algorithm Card Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredAlgos.map((algo) => (
-          <motion.div
-            key={algo.id}
-            whileHover={{ y: -4 }}
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group"
-          >
-            {/* Top row */}
-            <div>
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-[10px] font-extrabold uppercase bg-brand-50 dark:bg-brand-950/20 text-brand-650 dark:text-brand-405 px-2.5 py-1 rounded-md border border-brand-500/10">
-                  {algo.category}
-                </span>
-                
-                {/* Accent Icon */}
-                <div className={`p-2 rounded-xl bg-gradient-to-br ${algo.color} text-white shadow-sm`}>
-                  <algo.icon className="w-4 h-4" />
-                </div>
-              </div>
-
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 group-hover:text-brand-500 transition-colors">
-                {algo.name}
-              </h3>
-              <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm leading-relaxed min-h-[60px]">
-                {algo.description}
-              </p>
-            </div>
-
-            {/* Bottom Complexity row */}
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-850 flex items-center justify-between">
-              <div className="flex gap-4">
-                <div>
-                  <span className="block text-[8px] uppercase font-bold tracking-wider text-slate-400">Time</span>
-                  <span className="font-mono text-xs font-bold text-slate-700 dark:text-slate-300">{algo.timeComplexity}</span>
-                </div>
-                <div>
-                  <span className="block text-[8px] uppercase font-bold tracking-wider text-slate-400">Space</span>
-                  <span className="font-mono text-xs font-bold text-slate-700 dark:text-slate-300">{algo.spaceComplexity}</span>
-                </div>
-              </div>
-
-              <Link
-                to={algo.link}
-                className="flex items-center gap-1 text-xs font-extrabold text-brand-600 dark:text-brand-400 group-hover:gap-2 transition-all"
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center lg:justify-start pt-2">
+              <button
+                onClick={() => navigate('/visualizer')}
+                className="px-8 py-4 bg-[#3B78C8] hover:bg-[#1A2340] text-white font-bold rounded-xl transition-all duration-300 shadow-xl shadow-[#3B78C8]/25 flex items-center justify-center gap-2 group"
               >
-                <span>Visualize</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </motion.div>
-        ))}
+                <span>Start Visualizing Now</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
 
-        {filteredAlgos.length === 0 && (
-          <div className="col-span-full py-16 text-center text-slate-400 dark:text-slate-650">
-            <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm font-semibold uppercase tracking-wider">No algorithms match your criteria</p>
+              <button
+                onClick={() => {
+                  const el = document.getElementById('features');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex items-center gap-2 rounded-xl border border-[#9BC8FF] bg-white px-6 py-4 shadow-sm text-xs font-bold text-[#3B78C8] hover:bg-[#D9ECFF]/50 transition"
+              >
+                <span>Explore Features</span>
+                <ChevronDown className="w-4 h-4 text-[#3B78C8]" />
+              </button>
+            </div>
+
+            {/* No login badge */}
+            <div className="flex items-center justify-center lg:justify-start gap-2 text-sm font-bold text-emerald-600">
+              <CheckCircle2 className="h-4 w-4 shrink-0" />
+              <span>100% Free • No login required</span>
+            </div>
           </div>
-        )}
-      </div>
+
+          {/* Right Side: Sleek DSA Code & Motivation Card */}
+          <div className="lg:w-1/2 flex justify-center items-center relative min-h-[380px]">
+            <div className="w-full max-w-lg bg-white rounded-3xl border-2 border-[#9BC8FF] shadow-2xl overflow-hidden transition-all duration-300">
+              {/* Code Window Header Bar */}
+              <div className="bg-[#D9ECFF]/60 px-4 py-3 border-b border-[#9BC8FF]/40 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                </div>
+                <span className="text-xs font-mono font-bold text-[#3B78C8] flex items-center gap-1.5">
+                  <Terminal className="w-3.5 h-3.5" />
+                  dsa_mindset.cpp
+                </span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Interactive</span>
+              </div>
+
+              {/* Code Editor Body */}
+              <div className="p-6 font-mono text-xs leading-relaxed space-y-3 bg-[#F8FBFF] text-[#1A2340]">
+                <div className="text-gray-400 font-italic">// The DSA Developer Mindset</div>
+                <div>
+                  <span className="text-[#3B78C8] font-bold">void</span> <span className="text-purple-600 font-bold">masterAlgorithms</span>() &#123;
+                </div>
+                <div className="pl-4">
+                  <span className="text-[#3B78C8] font-bold">while</span> (problem.<span className="text-amber-600">isUnsolved</span>()) &#123;
+                </div>
+                <div className="pl-8 text-emerald-600">
+                  analyzePattern(); <span className="text-gray-400">// DP, Graph, or Binary Search</span>
+                </div>
+                <div className="pl-8 text-emerald-600">
+                  visualizeDataFlow(); <span className="text-gray-400">// Track pointers live</span>
+                </div>
+                <div className="pl-8 text-[#3B78C8]">
+                  optimizeLogic(); <span className="text-purple-500">// O(n²) ➔ O(n log n)</span>
+                </div>
+                <div className="pl-4">&#125;</div>
+                <div className="pl-4 text-emerald-600 font-bold">
+                  cout &lt;&lt; <span className="text-amber-600">"LeetCode Accepted! 🚀"</span>;
+                </div>
+                <div>&#125;</div>
+              </div>
+
+              {/* Motivational Banner */}
+              <div className="bg-[#D9ECFF]/80 p-4 border-t border-[#9BC8FF]/40 flex items-start gap-3">
+                <Lightbulb className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <p className="text-xs font-semibold text-[#1A2340] leading-relaxed">
+                  <strong className="text-[#3B78C8] block mb-0.5">Algorithm Mantra:</strong>
+                  Don't just memorize code — visualize the data flow, master the pattern, and optimize step-by-step.
+                </p>
+              </div>
+
+              {/* Live Complexity Badges */}
+              <div className="px-6 py-3 bg-white border-t border-[#9BC8FF]/30 flex items-center justify-between text-[11px] font-bold">
+                <span className="text-[#3B78C8] bg-[#D9ECFF] px-2.5 py-1 rounded-md border border-[#9BC8FF]/40">
+                  Time: O(n log n)
+                </span>
+                <span className="text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">
+                  Space: O(1)
+                </span>
+                <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                  Step Execution: Live
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CORE SERVICES HIGHLIGHT SECTION */}
+      <section className="py-16 bg-[#F8FBFF] border-t border-[#9BC8FF]/30">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-[#3B78C8] px-3.5 py-1 bg-[#D9ECFF] rounded-full border border-[#9BC8FF]">
+              Platform Services
+            </span>
+            <h2 className="text-3xl font-extrabold text-[#1A2340]">
+              Everything You Need to <span className="text-[#3B78C8]">Master DSA</span>
+            </h2>
+            <p className="text-sm text-[#1A2340]/70 font-medium">
+              Explore our primary learning pillars designed for comprehensive algorithmic mastery.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {coreServices.map((service) => {
+              const Icon = service.icon;
+              return (
+                <div
+                  key={service.id}
+                  onClick={() => navigate(service.link)}
+                  className="group bg-white rounded-2xl p-6 border-2 border-[#9BC8FF]/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="p-3.5 rounded-xl bg-[#D9ECFF] text-[#3B78C8] border border-[#9BC8FF]/40">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#D9ECFF] text-[#3B78C8] border border-[#9BC8FF]/50">
+                        {service.badge}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-bold text-[#1A2340] group-hover:text-[#3B78C8] transition-colors">
+                        {service.title}
+                      </h3>
+                      <span className="text-xs font-semibold text-[#3B78C8] block mt-0.5">
+                        {service.subtitle}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-[#1A2340]/75 leading-relaxed font-medium">
+                      {service.description}
+                    </p>
+
+                    <div className="space-y-2 pt-2 border-t border-[#9BC8FF]/30">
+                      {service.features.map((feat, i) => (
+                        <div key={i} className="flex items-start gap-2 text-xs font-semibold text-[#1A2340]/90">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#3B78C8] shrink-0 mt-0.5" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-[#9BC8FF]/30 flex items-center justify-between text-xs font-bold text-[#3B78C8] group-hover:gap-2 transition-all">
+                    <span>Explore {service.title}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES SECTION */}
+      <section id="features" className="py-20 bg-white border-t border-[#9BC8FF]/30">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-[#3B78C8] px-3.5 py-1 bg-[#D9ECFF] rounded-full border border-[#9BC8FF]">
+              Interactive Modules
+            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A2340]">
+              Explore All <span className="text-[#3B78C8]">DSA Visualizers</span>
+            </h2>
+            <p className="text-[#1A2340]/70 text-base font-medium">
+              Click on any module to step into interactive animations with adjustable speed controls and custom inputs.
+            </p>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featureCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.id}
+                  onClick={() => navigate(card.link)}
+                  className="group relative bg-[#F8FBFF] rounded-2xl p-7 border border-[#9BC8FF]/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div className={`p-3.5 rounded-xl bg-gradient-to-br ${card.color} text-white shadow-md`}>
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-[#D9ECFF] text-[#3B78C8] border border-[#9BC8FF]/40">
+                        {card.badge}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-[#1A2340] group-hover:text-[#3B78C8] transition-colors">
+                      {card.title}
+                    </h3>
+                    <p className="text-sm text-[#1A2340]/70 mt-2 leading-relaxed font-medium">
+                      {card.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-[#9BC8FF]/30 flex items-center justify-between text-xs font-bold text-[#3B78C8] group-hover:gap-2 transition-all">
+                    <span>Try Visualizer</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS SECTION */}
+      <section id="how-it-works" className="py-20 bg-[#F8FBFF] border-t border-[#9BC8FF]/30">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#3B78C8] bg-[#D9ECFF] px-3.5 py-1 rounded-full border border-[#9BC8FF]">
+              <Sparkles className="w-4 h-4" />
+              Learning Process
+            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A2340]">
+              How DSA Visualizer <span className="text-[#3B78C8]">Works</span>
+            </h2>
+            <p className="text-[#1A2340]/70 text-sm md:text-base font-medium">
+              Master complex data structures & algorithms in 4 simple steps.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {howItWorksSteps.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl p-7 border border-[#9BC8FF]/50 shadow-sm space-y-4 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition-all"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-[#D9ECFF] text-[#3B78C8] font-bold">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-2xl font-black font-mono text-[#3B78C8]/40">
+                        {item.step}
+                      </span>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-[#1A2340] mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-[#1A2340]/75 leading-relaxed font-medium">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-[#9BC8FF]/20 text-[11px] font-bold text-[#3B78C8]">
+                    {item.badge}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ ACCORDION SECTION */}
+      <section id="faq" className="py-20 bg-white border-t border-[#9BC8FF]/30">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-14 space-y-3">
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#3B78C8]">
+              <HelpCircle className="w-4 h-4" />
+              Frequently Asked Questions
+            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A2340]">
+              Got Questions? <span className="text-[#3B78C8]">We've Got Answers</span>
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="bg-[#F8FBFF] border border-[#9BC8FF]/50 rounded-2xl overflow-hidden transition-all duration-200"
+              >
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full flex justify-between items-center p-6 text-left font-bold text-[#1A2340] text-base md:text-lg hover:text-[#3B78C8] transition-colors"
+                >
+                  <span>{faq.question}</span>
+                  {openFaq === index ? (
+                    <ChevronUp className="w-5 h-5 text-[#3B78C8] shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-gray-400 shrink-0" />
+                  )}
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-6 text-sm text-[#1A2340]/80 leading-relaxed border-t border-[#9BC8FF]/20 pt-4 font-medium">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

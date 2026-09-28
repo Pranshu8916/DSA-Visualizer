@@ -23,7 +23,7 @@ export const SortingVisualizer: React.FC = () => {
   const [steps, setSteps] = useState<SortStep[]>([]);
   const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [speed, setSpeed] = useState<number>(100); // ms per step
+  const [speed, setSpeed] = useState<number>(500); // ms per step (higher delay = slower execution)
   
   const timerRef = useRef<any>(null);
 
@@ -446,27 +446,27 @@ export const SortingVisualizer: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header Panel */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <BarChart className="w-6 h-6 text-brand-500" />
             Sorting Visualizer
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1">
             Compare performance and visual flows of various sorting algorithms.
           </p>
         </div>
 
         {/* Algorithm Select */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
           {(['bubble-sort', 'selection-sort', 'insertion-sort', 'merge-sort', 'quick-sort'] as SortAlgorithm[]).map((algo) => (
             <button
               key={algo}
               onClick={() => setAlgorithm(algo)}
-              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 ${
+              className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 cursor-pointer ${
                 algorithm === algo
-                  ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-350 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-[#3B78C8] text-white shadow-md shadow-[#3B78C8]/30 ring-2 ring-[#3B78C8]/40 font-bold scale-[1.02]'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 border border-slate-200/60'
               }`}
             >
               {algo.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -478,9 +478,9 @@ export const SortingVisualizer: React.FC = () => {
       {/* Control & Visualization Area */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Side: Controls & Stats */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
+        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
           <div>
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm mb-3">Controls</h3>
+            <h3 className="font-bold text-slate-700 text-sm mb-3">Controls</h3>
             <div className="flex flex-col gap-3">
               {/* Play / Pause / Reset */}
               <div className="flex gap-2">
@@ -497,7 +497,7 @@ export const SortingVisualizer: React.FC = () => {
                     setIsPlaying(false);
                     setCurrentStepIdx(0);
                   }}
-                  className="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-slate-600 dark:text-slate-300 transition-all"
+                  className="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 transition-all"
                   title="Reset Playback"
                 >
                   <RotateCcw className="w-4 h-4" />
@@ -506,27 +506,31 @@ export const SortingVisualizer: React.FC = () => {
 
               {/* Speed Slider */}
               <div className="space-y-1">
-                <div className="flex justify-between text-xs font-semibold text-slate-500">
-                  <span>Speed</span>
-                  <span>{speed}ms</span>
+                <div className="flex justify-between text-xs font-semibold text-gray-500">
+                  <span>Speed: {speed}ms</span>
+                  <span>{speed <= 300 ? '⚡ Fast' : speed >= 800 ? '🐢 Slow' : '⚖️ Normal'}</span>
                 </div>
                 <input
                   type="range"
-                  min="20"
-                  max="600"
-                  step="20"
+                  min="100"
+                  max="1500"
+                  step="50"
                   value={speed}
                   onChange={(e) => setSpeed(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500"
+                  className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3B78C8]"
                 />
+                <div className="flex justify-between text-[10px] font-bold text-gray-400">
+                  <span>100ms (Fast)</span>
+                  <span>1500ms (Slow)</span>
+                </div>
               </div>
 
-              <hr className="border-slate-150 dark:border-slate-850" />
+              <hr className="border-slate-150" />
 
               {/* Reset Array */}
               <button
                 onClick={() => generateRandomArray()}
-                className="w-full flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-950 py-2 rounded-xl text-slate-700 dark:text-slate-300 font-semibold text-xs transition-all"
+                className="w-full flex items-center justify-center gap-2 border border-slate-200 hover:bg-slate-50 py-2 rounded-xl text-slate-700 font-semibold text-xs transition-all"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 New Random Array
@@ -536,14 +540,14 @@ export const SortingVisualizer: React.FC = () => {
 
           {/* Custom Array Entry */}
           <div className="space-y-2">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Custom Input</h3>
+            <h3 className="font-bold text-slate-700 text-sm">Custom Input</h3>
             <div className="flex gap-2">
               <input
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 placeholder="20, 150, 80, 220"
-                className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
+                className="flex-1 bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
               />
               <button
                 onClick={handleCustomArray}
@@ -555,18 +559,18 @@ export const SortingVisualizer: React.FC = () => {
             </div>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Real-time Counters */}
           <div className="space-y-3">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Counters</h3>
+            <h3 className="font-bold text-slate-700 text-sm">Counters</h3>
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 p-3 rounded-xl text-center">
-                <span className="block text-slate-400 dark:text-slate-550 text-[10px] uppercase font-bold tracking-wider">Comparisons</span>
+              <div className="bg-slate-50 border border-slate-150 p-3 rounded-xl text-center">
+                <span className="block text-slate-400 text-[10px] uppercase font-bold tracking-wider">Comparisons</span>
                 <span className="text-xl font-bold font-mono text-amber-500">{currentStep.comparisons}</span>
               </div>
-              <div className="bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 p-3 rounded-xl text-center">
-                <span className="block text-slate-400 dark:text-slate-550 text-[10px] uppercase font-bold tracking-wider">Swaps</span>
+              <div className="bg-slate-50 border border-slate-150 p-3 rounded-xl text-center">
+                <span className="block text-slate-400 text-[10px] uppercase font-bold tracking-wider">Swaps</span>
                 <span className="text-xl font-bold font-mono text-rose-500">{currentStep.swaps}</span>
               </div>
             </div>
@@ -585,31 +589,31 @@ export const SortingVisualizer: React.FC = () => {
                   setIsPlaying(false);
                   setCurrentStepIdx(Number(e.target.value));
                 }}
-                className="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500"
+                className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-500"
               />
             </div>
           </div>
         </div>
 
         {/* Right Side: Visualizing Canvas */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm lg:col-span-3 flex flex-col justify-between min-h-[350px]">
+        <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm lg:col-span-3 flex flex-col justify-between min-h-[350px]">
           {/* Legend */}
-          <div className="flex gap-4 text-xs font-medium pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex gap-4 text-xs font-medium pb-4 border-b border-slate-100">
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-3.5 rounded bg-brand-500"></span>
-              <span className="text-slate-500 dark:text-slate-400">Normal</span>
+              <span className="text-slate-500">Normal</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-3.5 rounded bg-amber-500"></span>
-              <span className="text-slate-500 dark:text-slate-400">Comparing</span>
+              <span className="text-slate-500">Comparing</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-3.5 rounded bg-rose-500"></span>
-              <span className="text-slate-500 dark:text-slate-400">Swapping</span>
+              <span className="text-slate-500">Swapping</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-3.5 rounded bg-emerald-500"></span>
-              <span className="text-slate-500 dark:text-slate-400">Sorted</span>
+              <span className="text-slate-500">Sorted</span>
             </div>
           </div>
 
@@ -617,13 +621,13 @@ export const SortingVisualizer: React.FC = () => {
           <div className="flex-1 flex items-end justify-center gap-1 md:gap-2 pt-8 pb-4 h-64 select-none">
             {currentStep.array.map((val, idx) => {
               // Decide bar color based on states
-              let barColor = 'bg-brand-500/80 dark:bg-brand-600/80 hover:bg-brand-600 dark:hover:bg-brand-500';
+              let barColor = 'bg-brand-500/80 hover:bg-brand-600';
               if (currentStep.comparing.includes(idx)) {
-                barColor = 'bg-amber-500 dark:bg-amber-500';
+                barColor = 'bg-amber-500';
               } else if (currentStep.swapping.includes(idx)) {
-                barColor = 'bg-rose-500 dark:bg-rose-500';
+                barColor = 'bg-rose-500';
               } else if (currentStep.sorted.includes(idx)) {
-                barColor = 'bg-emerald-500 dark:bg-emerald-500';
+                barColor = 'bg-emerald-500';
               }
 
               return (

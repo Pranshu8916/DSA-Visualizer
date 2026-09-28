@@ -38,13 +38,13 @@ export const QueueVisualizer: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+      <div className="flex items-center justify-between bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <ArrowRightLeft className="w-6 h-6 text-brand-500" />
             Queue Visualizer (FIFO)
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1">
             Observe elements flowing in a First-In First-Out container. Enqueue happens at Rear, Dequeue at Front.
           </p>
         </div>
@@ -52,13 +52,13 @@ export const QueueVisualizer: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Operations controls */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
+        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
           <div className="space-y-4">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Operations</h3>
+            <h3 className="font-bold text-slate-700 text-sm">Operations</h3>
 
             {/* Enqueue */}
             <div className="space-y-2">
-              <label className="text-xs text-slate-450 dark:text-slate-500 font-semibold block">Enqueue (Insert)</label>
+              <label className="text-xs text-slate-450 font-semibold block">Enqueue (Insert)</label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -66,7 +66,7 @@ export const QueueVisualizer: React.FC = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Enter value"
-                  className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
+                  className="flex-1 bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
                 />
                 <button
                   onClick={handleEnqueue}
@@ -91,20 +91,20 @@ export const QueueVisualizer: React.FC = () => {
 
             <button
               onClick={handleReset}
-              className="w-full border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-950 py-2 rounded-xl text-xs font-bold text-slate-650 dark:text-slate-400 transition-all"
+              className="w-full border border-slate-200 hover:bg-slate-50 py-2 rounded-xl text-xs font-bold text-slate-650 transition-all"
             >
               Clear Queue
             </button>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Operation history logs */}
           <div>
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm mb-3">Action History</h3>
-            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl p-3 h-40 overflow-y-auto space-y-1.5 text-xs font-mono">
+            <h3 className="font-bold text-slate-700 text-sm mb-3">Action History</h3>
+            <div className="bg-slate-50 border border-slate-150 rounded-xl p-3 h-40 overflow-y-auto space-y-1.5 text-xs font-mono">
               {logs.map((log, index) => (
-                <div key={index} className="text-slate-600 dark:text-slate-400">
+                <div key={index} className="text-slate-600">
                   &gt; {log}
                 </div>
               ))}
@@ -113,11 +113,11 @@ export const QueueVisualizer: React.FC = () => {
         </div>
 
         {/* Queue Conveyor track */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm lg:col-span-2 flex flex-col justify-center min-h-[400px]">
+        <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm lg:col-span-2 flex flex-col justify-center min-h-[400px]">
           
           <div className="flex flex-col items-center gap-10">
             {/* Visual Queue Track */}
-            <div className="w-full border-y-4 border-slate-200 dark:border-slate-800 h-24 flex items-center px-4 gap-2 relative bg-slate-50/50 dark:bg-slate-950/20 overflow-x-auto scrollbar-none rounded-sm">
+            <div className="w-full border-y-4 border-slate-200 h-24 flex items-center px-4 gap-2 relative bg-slate-50/50 overflow-x-auto scrollbar-none rounded-sm">
               <AnimatePresence initial={false}>
                 {queue.map((item, idx) => {
                   const isFront = idx === 0;
@@ -165,7 +165,7 @@ export const QueueVisualizer: React.FC = () => {
               </AnimatePresence>
 
               {queue.length === 0 && (
-                <div className="absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-600 text-xs font-semibold uppercase tracking-wider">
+                <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-xs font-semibold uppercase tracking-wider">
                   Empty Queue (No elements)
                 </div>
               )}

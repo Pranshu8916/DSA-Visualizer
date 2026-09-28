@@ -26,7 +26,7 @@ export const SearchingVisualizer: React.FC = () => {
   const [steps, setSteps] = useState<SearchStep[]>([]);
   const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [speed, setSpeed] = useState<number>(300); // ms per step
+  const [speed, setSpeed] = useState<number>(600); // ms per step (higher delay = slower execution)
 
   const timerRef = useRef<any>(null);
 
@@ -245,19 +245,19 @@ export const SearchingVisualizer: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header Panel */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <Search className="w-6 h-6 text-brand-500" />
             Searching Visualizer
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1">
             Observe the step-by-step element evaluation process for Linear and Binary searches.
           </p>
         </div>
 
         {/* Algorithm Selection */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
           {(['linear-search', 'binary-search'] as SearchAlgorithm[]).map((algo) => (
             <button
               key={algo}
@@ -268,10 +268,10 @@ export const SearchingVisualizer: React.FC = () => {
                   setArray(sorted);
                 }
               }}
-              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 ${
+              className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-200 cursor-pointer ${
                 algorithm === algo
-                  ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-350 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-[#3B78C8] text-white shadow-md shadow-[#3B78C8]/30 ring-2 ring-[#3B78C8]/40 font-bold scale-[1.02]'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 border border-slate-200/60'
               }`}
             >
               {algo === 'linear-search' ? 'Linear Search' : 'Binary Search (Sorted Array)'}
@@ -283,9 +283,9 @@ export const SearchingVisualizer: React.FC = () => {
       {/* Control & Visualization Area */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Control Panel */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
+        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-6 lg:col-span-1">
           <div>
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm mb-3">Controls</h3>
+            <h3 className="font-bold text-slate-700 text-sm mb-3">Controls</h3>
             <div className="flex flex-col gap-3">
               {/* Play / Pause / Reset */}
               <div className="flex gap-2">
@@ -302,7 +302,7 @@ export const SearchingVisualizer: React.FC = () => {
                     setIsPlaying(false);
                     setCurrentStepIdx(0);
                   }}
-                  className="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-slate-600 dark:text-slate-300 transition-all"
+                  className="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-600 transition-all"
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
@@ -310,27 +310,31 @@ export const SearchingVisualizer: React.FC = () => {
 
               {/* Speed Slider */}
               <div className="space-y-1">
-                <div className="flex justify-between text-xs font-semibold text-slate-500">
-                  <span>Speed</span>
-                  <span>{speed}ms</span>
+                <div className="flex justify-between text-xs font-semibold text-gray-500">
+                  <span>Speed: {speed}ms</span>
+                  <span>{speed <= 300 ? '⚡ Fast' : speed >= 800 ? '🐢 Slow' : '⚖️ Normal'}</span>
                 </div>
                 <input
                   type="range"
-                  min="50"
-                  max="1000"
+                  min="100"
+                  max="1500"
                   step="50"
                   value={speed}
                   onChange={(e) => setSpeed(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500"
+                  className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3B78C8]"
                 />
+                <div className="flex justify-between text-[10px] font-bold text-gray-400">
+                  <span>100ms (Fast)</span>
+                  <span>1500ms (Slow)</span>
+                </div>
               </div>
 
-              <hr className="border-slate-150 dark:border-slate-850" />
+              <hr className="border-slate-150" />
 
               {/* Reset Array */}
               <button
                 onClick={() => generateRandomArray()}
-                className="w-full flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-950 py-2 rounded-xl text-slate-700 dark:text-slate-300 font-semibold text-xs transition-all"
+                className="w-full flex items-center justify-center gap-2 border border-slate-200 hover:bg-slate-50 py-2 rounded-xl text-slate-700 font-semibold text-xs transition-all"
               >
                 New Random Array
               </button>
@@ -339,13 +343,13 @@ export const SearchingVisualizer: React.FC = () => {
 
           {/* Set Search Target */}
           <div className="space-y-2">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm">Target Element</h3>
+            <h3 className="font-bold text-slate-700 text-sm">Target Element</h3>
             <div className="flex gap-2">
               <input
                 type="number"
                 value={targetInput}
                 onChange={(e) => setTargetInput(e.target.value)}
-                className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
+                className="flex-1 bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
               />
               <button
                 onClick={handleTargetSubmit}
@@ -358,14 +362,14 @@ export const SearchingVisualizer: React.FC = () => {
 
           {/* Custom Array Entry */}
           <div className="space-y-2">
-            <h3 className="font-bold text-slate-700 dark:text-slate-300 text-sm font-semibold">Custom Input</h3>
+            <h3 className="font-bold text-slate-700 text-sm font-semibold">Custom Input</h3>
             <div className="flex gap-2">
               <input
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 placeholder="10, 25, 45, 60, 95"
-                className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
+                className="flex-1 bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none focus:border-brand-500"
               />
               <button
                 onClick={handleCustomArray}
@@ -376,10 +380,10 @@ export const SearchingVisualizer: React.FC = () => {
             </div>
           </div>
 
-          <hr className="border-slate-150 dark:border-slate-850" />
+          <hr className="border-slate-150" />
 
           {/* Result Text */}
-          <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-150 dark:border-slate-850 text-center text-sm font-semibold">
+          <div className="bg-slate-50 p-4 rounded-xl border border-slate-150 text-center text-sm font-semibold">
             {currentStep.foundIndex === -2 && (
               <span className="text-rose-500">Target element {target} not found!</span>
             )}
@@ -393,24 +397,24 @@ export const SearchingVisualizer: React.FC = () => {
         </div>
 
         {/* Right Visualization Grid */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm lg:col-span-3 flex flex-col justify-between min-h-[350px]">
+        <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm lg:col-span-3 flex flex-col justify-between min-h-[350px]">
           {/* Legend */}
-          <div className="flex flex-wrap gap-4 text-xs font-medium pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex flex-wrap gap-4 text-xs font-medium pb-4 border-b border-slate-100">
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-3.5 rounded bg-brand-500"></span>
-              <span className="text-slate-500 dark:text-slate-400">Normal</span>
+              <span className="text-slate-500">Normal</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-3.5 rounded bg-amber-500"></span>
-              <span className="text-slate-500 dark:text-slate-400">Inspecting / Mid</span>
+              <span className="text-slate-500">Inspecting / Mid</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-3.5 h-3.5 rounded bg-emerald-500"></span>
-              <span className="text-slate-500 dark:text-slate-400">Match Found</span>
+              <span className="text-slate-500">Match Found</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded bg-slate-350 dark:bg-slate-700 opacity-40"></span>
-              <span className="text-slate-500 dark:text-slate-400">Discarded Range</span>
+              <span className="w-3.5 h-3.5 rounded bg-slate-350 opacity-40"></span>
+              <span className="text-slate-500">Discarded Range</span>
             </div>
           </div>
 
@@ -421,10 +425,10 @@ export const SearchingVisualizer: React.FC = () => {
               const isMatch = currentStep.foundIndex === idx || (currentStep.state === 'match' && currentStep.index === idx);
               const isScanning = currentStep.index === idx;
 
-              let boxColor = 'bg-brand-50 border-brand-200 dark:bg-brand-950/20 dark:border-brand-900 text-brand-700 dark:text-brand-300';
+              let boxColor = 'bg-brand-50 border-brand-200 text-brand-700';
               
               if (isDiscarded) {
-                boxColor = 'bg-slate-100 border-slate-200 dark:bg-slate-950 dark:border-slate-850 text-slate-300 dark:text-slate-750 opacity-40 line-through';
+                boxColor = 'bg-slate-100 border-slate-200 text-slate-300 opacity-40 line-through';
               } else if (isMatch) {
                 boxColor = 'bg-emerald-500 border-emerald-600 text-white scale-110 shadow-lg shadow-emerald-500/20';
               } else if (isScanning) {
@@ -446,7 +450,7 @@ export const SearchingVisualizer: React.FC = () => {
                     {val}
                   </motion.div>
                   {/* Index label */}
-                  <span className="text-[10px] text-slate-400 dark:text-slate-550 font-bold font-mono mt-1">
+                  <span className="text-[10px] text-slate-400 font-bold font-mono mt-1">
                     [{idx}]
                   </span>
 
