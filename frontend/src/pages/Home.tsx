@@ -113,6 +113,15 @@ export const Home: React.FC = () => {
       color: 'from-rose-600 to-[#3B78C8]',
       badge: 'BFS & DFS',
       link: '/visualizer?tab=graph'
+    },
+    {
+      id: 'recursion',
+      title: 'Recursion & Call Stack',
+      description: 'Visualize dynamic recursion tree diagrams, stack frame push/pops, returned value tags, and custom code execution.',
+      icon: Cpu,
+      color: 'from-blue-600 to-[#1A2340]',
+      badge: 'Tree & Call Stack',
+      link: '/visualizer?tab=recursion'
     }
   ];
 
@@ -120,7 +129,7 @@ export const Home: React.FC = () => {
     {
       step: '01',
       title: 'Select an Algorithm',
-      description: 'Choose from 15+ Data Structures & Algorithms including Sorting, Binary Trees, Graphs, Stacks, Queues, and Searching.',
+      description: 'Choose from 15+ Data Structures & Algorithms including Sorting, Binary Trees, Graphs, Recursion Call Stack, Stacks, Queues, and Searching.',
       icon: Code,
       badge: 'Step 1'
     },
@@ -158,7 +167,7 @@ export const Home: React.FC = () => {
     },
     {
       question: "Which data structures and algorithms are included?",
-      answer: "We support Sorting (Bubble, Selection, Insertion, Merge, Quick, Heap), Searching (Linear, Binary), Stacks, Queues, Linked Lists (Singly, Doubly, Circular), Trees (BST, Inorder, Preorder, Postorder), and Graphs (BFS, DFS)."
+      answer: "We support Sorting (Bubble, Selection, Insertion, Merge, Quick, Heap), Searching (Linear, Binary), Stacks, Queues, Linked Lists (Singly, Doubly, Circular), Trees (BST, Traversals), Graphs (BFS, DFS, Prim, Kruskal), and Recursion (Tree & Call Stack)."
     },
     {
       question: "Can I test custom array or value inputs?",
@@ -215,66 +224,66 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Side: Sleek DSA Code & Motivation Card */}
+          {/* Right Side: Sleek Dark IDE Code & Motivation Card */}
           <div className="lg:w-1/2 flex justify-center items-center relative min-h-[380px]">
-            <div className="w-full max-w-lg bg-white rounded-3xl border-2 border-[#9BC8FF] shadow-2xl overflow-hidden transition-all duration-300">
+            <div className="w-full max-w-lg bg-[#0F172A] rounded-3xl border-2 border-slate-700 shadow-2xl overflow-hidden transition-all duration-300">
               {/* Code Window Header Bar */}
-              <div className="bg-[#D9ECFF]/60 px-4 py-3 border-b border-[#9BC8FF]/40 flex items-center justify-between">
+              <div className="bg-[#1E293B] px-4 py-3 border-b border-slate-800 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 rounded-full bg-rose-500"></div>
                   <div className="w-3 h-3 rounded-full bg-amber-500"></div>
                   <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
                 </div>
-                <span className="text-xs font-mono font-bold text-[#3B78C8] flex items-center gap-1.5">
-                  <Terminal className="w-3.5 h-3.5" />
+                <span className="text-xs font-mono font-bold text-cyan-400 flex items-center gap-1.5">
+                  <Terminal className="w-3.5 h-3.5 text-cyan-400" />
                   dsa_mindset.cpp
                 </span>
-                <span className="text-[10px] font-bold text-gray-400 uppercase">Interactive</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Interactive</span>
               </div>
 
               {/* Code Editor Body */}
-              <div className="p-6 font-mono text-xs leading-relaxed space-y-3 bg-[#F8FBFF] text-[#1A2340]">
-                <div className="text-gray-400 font-italic">// The DSA Developer Mindset</div>
+              <div className="p-6 font-mono text-xs leading-relaxed space-y-3 bg-[#0F172A] text-slate-200">
+                <div className="text-slate-500 font-italic">// The DSA Developer Mindset</div>
                 <div>
-                  <span className="text-[#3B78C8] font-bold">void</span> <span className="text-purple-600 font-bold">masterAlgorithms</span>() &#123;
+                  <span className="text-cyan-400 font-bold">void</span> <span className="text-purple-400 font-bold">masterAlgorithms</span>() &#123;
                 </div>
                 <div className="pl-4">
-                  <span className="text-[#3B78C8] font-bold">while</span> (problem.<span className="text-amber-600">isUnsolved</span>()) &#123;
+                  <span className="text-cyan-400 font-bold">while</span> (problem.<span className="text-amber-400">isUnsolved</span>()) &#123;
                 </div>
-                <div className="pl-8 text-emerald-600">
-                  analyzePattern(); <span className="text-gray-400">// DP, Graph, or Binary Search</span>
+                <div className="pl-8 text-emerald-400">
+                  analyzePattern(); <span className="text-slate-500">// DP, Graph, or Binary Search</span>
                 </div>
-                <div className="pl-8 text-emerald-600">
-                  visualizeDataFlow(); <span className="text-gray-400">// Track pointers live</span>
+                <div className="pl-8 text-emerald-400">
+                  visualizeDataFlow(); <span className="text-slate-500">// Track pointers live</span>
                 </div>
-                <div className="pl-8 text-[#3B78C8]">
-                  optimizeLogic(); <span className="text-purple-500">// O(n²) ➔ O(n log n)</span>
+                <div className="pl-8 text-cyan-400">
+                  optimizeLogic(); <span className="text-purple-400">// O(n²) ➔ O(n log n)</span>
                 </div>
                 <div className="pl-4">&#125;</div>
-                <div className="pl-4 text-emerald-600 font-bold">
-                  cout &lt;&lt; <span className="text-amber-600">"LeetCode Accepted! 🚀"</span>;
+                <div className="pl-4 text-emerald-400 font-bold">
+                  cout &lt;&lt; <span className="text-amber-300">"LeetCode Accepted! 🚀"</span>;
                 </div>
                 <div>&#125;</div>
               </div>
 
               {/* Motivational Banner */}
-              <div className="bg-[#D9ECFF]/80 p-4 border-t border-[#9BC8FF]/40 flex items-start gap-3">
-                <Lightbulb className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <p className="text-xs font-semibold text-[#1A2340] leading-relaxed">
-                  <strong className="text-[#3B78C8] block mb-0.5">Algorithm Mantra:</strong>
+              <div className="bg-[#1E293B]/90 p-4 border-t border-slate-800 flex items-start gap-3">
+                <Lightbulb className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                <p className="text-xs font-semibold text-slate-300 leading-relaxed">
+                  <strong className="text-cyan-400 block mb-0.5">Algorithm Mantra:</strong>
                   Don't just memorize code — visualize the data flow, master the pattern, and optimize step-by-step.
                 </p>
               </div>
 
               {/* Live Complexity Badges */}
-              <div className="px-6 py-3 bg-white border-t border-[#9BC8FF]/30 flex items-center justify-between text-[11px] font-bold">
-                <span className="text-[#3B78C8] bg-[#D9ECFF] px-2.5 py-1 rounded-md border border-[#9BC8FF]/40">
+              <div className="px-6 py-3 bg-[#0B1120] border-t border-slate-800 flex items-center justify-between text-[11px] font-bold">
+                <span className="text-cyan-300 bg-cyan-950/80 px-2.5 py-1 rounded-md border border-cyan-800/50">
                   Time: O(n log n)
                 </span>
-                <span className="text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">
+                <span className="text-purple-300 bg-purple-950/80 px-2.5 py-1 rounded-md border border-purple-800/50">
                   Space: O(1)
                 </span>
-                <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                <span className="text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-800/50">
                   Step Execution: Live
                 </span>
               </div>
